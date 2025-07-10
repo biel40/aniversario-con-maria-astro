@@ -91,7 +91,7 @@ Tots els comandos s'executen des de l'arrel del projecte:
 Per canviar el vídeo, edita la variable `videoSrc` a `src/pages/index.astro`:
 
 ```javascript
-const videoSrc = "https://www.youtube.com/embed/VIDEO_ID?si=HASH";
+const videoSrc = "https://www.youtube.com/embed/xxxxxx?si=yyyyyy";
 ```
 
-*Creat amb ❤️ ny Gabriel Borrás Serra*
+*Creat amb amor ❤️ by Gabriel Borrás Serra*
