@@ -1,0 +1,292 @@
+---
+import Layout from "../layouts/Layout.astro";
+import VideoSection from "../components/VideoSection.astro";
+import PlaylistPlayer from "../components/PlaylistPlayer.astro";
+
+const videoSrc = "https://www.youtube.com/embed/hop0nM1V_DE?si=kbs1awPhaXsQygX7";
+
+// Playlist de canciones
+const playlist = [
+	{
+		src: "/music/song1.mp3",
+		title: "Would You Fall in Love with Me Again?",
+		artist: "EPIC the Musical - Jorge Rivera Herrans",
+	},
+	{
+		src: "/music/song2.mp3",
+		title: "To Zanarkand (FFX) X Dearly Beloved (KH)",
+		artist: "Square Enix",
+	},
+	{
+		src: "/music/song3.mp3",
+		title: "To Zanarkand (FFX) - Piano wedding version",
+		artist: "Nobuo Uematsu",
+	},
+	{
+		src: "/music/song4.mp3",
+		title: "Love Story - Piano Wedding Version",
+		artist: "Taylor Swift",
+	},
+];
+---
+
+<Layout title="El Nostre Aniversari ❤️">
+	<section class="hero">
+		<div class="hero-content">
+			<div class="hearts">
+				<div class="heart"></div>
+			</div>
+
+			<h1 class="hero-title fade-in-up">Es nostre aniversari</h1>
+			<p class="hero-subtitle fade-in-up">
+				No hi ha cap regal que pugui expressar tot lo que sent per tu
+				d'una forma material. Així que he decidit crear algo únic per
+				noltros. El mes important és que estic aquí, amb tu, celebrant
+				el nostre amor, i tot el que hem compartit durant aquest primer
+				any.
+			</p>
+
+			<button
+				class="cta-button fade-in-up delay-600 pulse-animation"
+				onclick="document.querySelector('.video-section').scrollIntoView({behavior: 'smooth'})"
+			>
+				¿Vols veure el nostre vídeo especial?
+			</button>
+		</div>
+
+		<div class="hero-bg"></div>
+	</section>
+
+	<VideoSection
+		videoSrc={videoSrc}
+		title="Primer vídeo junts ❤️"
+		description="Un missatge des del meu cor, amb tot per celebrar es nostre amor. Un record únic que sempre podrem tornar a veure junts."
+	/>
+
+	<!-- Sección de mensaje final y dedicatoria -->
+	<section class="message-section">
+		<div class="container">
+			<div class="message-content">
+				<h2 class="message-title">
+					Per al meu primer i únic amor que he tengut.
+				</h2>
+				<div class="message-text">
+					<p>
+						Cada dia al teu costat és una nova aventura, cada moment
+						compartit amb tu és un regal de la vida. Gràcies,
+						gràcies per ser la meva companya de aventures, la meva
+						millor amiga, la meva confident i s'amor de sa meva
+						vida. Feim un equip increïble, i no puc imaginar la meva
+						vida sense tu.
+					</p>
+					<p>
+						Que aquest primer aniversari sigui el primer de molts
+						més que han de venir. T'estim infinit vida meva.❤️
+					</p>
+				</div>
+				<div class="signature">P.D: Ich liebe dich mehr ❤️</div>
+			</div>
+		</div>
+	</section>
+
+	<PlaylistPlayer songs={playlist} />
+</Layout>
+
+<style>
+	.hero {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		background: linear-gradient(
+			135deg,
+			#ff9a9e 0%,
+			#fecfef 50%,
+			#fecfef 100%
+		);
+		overflow: hidden;
+	}
+
+	.hero-bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="a" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="%23ffffff" stop-opacity=".1"/><stop offset="1" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="50" cy="50" r="50" fill="url(%23a)"/></svg>')
+			repeat;
+		opacity: 0.3;
+	}
+
+	.hero-content {
+		text-align: center;
+		z-index: 2;
+		position: relative;
+		max-width: 800px;
+		padding: 0 20px;
+	}
+
+	.hearts {
+		display: flex;
+		justify-content: center;
+		gap: 20px;
+		margin-bottom: 40px;
+	}
+
+	.heart {
+		width: 20px;
+		height: 20px;
+		background: #ff6b9d;
+		transform: rotate(45deg);
+		position: relative;
+		animation: heartbeat 1.5s ease-in-out infinite;
+	}
+
+	.heart::before,
+	.heart::after {
+		content: "";
+		width: 20px;
+		height: 20px;
+		background: #ff6b9d;
+		border-radius: 50%;
+		position: absolute;
+	}
+
+	.heart::before {
+		top: -10px;
+		left: 0;
+	}
+
+	.heart::after {
+		top: 0;
+		left: -10px;
+	}
+
+	@keyframes heartbeat {
+		0%,
+		100% {
+			transform: rotate(45deg) scale(1);
+		}
+		50% {
+			transform: rotate(45deg) scale(1.1);
+		}
+	}
+
+	.hero-title {
+		font-size: 4rem;
+		color: white;
+		margin-bottom: 24px;
+		font-weight: 300;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		animation-delay: 0.2s;
+	}
+
+	.hero-subtitle {
+		font-size: 1.3rem;
+		color: rgba(255, 255, 255, 0.9);
+		margin-bottom: 40px;
+		font-weight: 300;
+		animation-delay: 0.4s;
+	}
+
+	.anniversary-date {
+		margin-bottom: 40px;
+		animation-delay: 0.6s;
+	}
+
+	.date-text {
+		display: block;
+		color: rgba(255, 255, 255, 0.8);
+		font-size: 1rem;
+		margin-bottom: 12px;
+	}
+
+	.date-number {
+		font-size: 3rem;
+		color: white;
+		font-weight: 300;
+	}
+
+	.cta-button {
+		background: white;
+		color: #ff6b9d;
+		border: none;
+		padding: 16px 32px;
+		font-size: 1.1rem;
+		border-radius: 50px;
+		cursor: pointer;
+		font-weight: 500;
+		transition: all 0.3s ease;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+		animation-delay: 0.8s;
+	}
+
+	.cta-button:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+	}
+
+	/* Sección de Mensaje */
+	.message-section {
+		padding: 120px 0;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+	}
+
+	.message-content {
+		max-width: 600px;
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.message-title {
+		font-size: 3rem;
+		margin-bottom: 40px;
+		font-weight: 300;
+	}
+
+	.message-text {
+		font-size: 1.2rem;
+		line-height: 1.8;
+		margin-bottom: 40px;
+	}
+
+	.message-text p {
+		margin-bottom: 24px;
+	}
+
+	.signature {
+		font-size: 1.3rem;
+		font-style: italic;
+		opacity: 0.9;
+	}
+
+	/* Media Queries */
+	@media (max-width: 768px) {
+		.hero-title {
+			font-size: 2.5rem;
+		}
+
+		.hero-subtitle {
+			font-size: 1.1rem;
+		}
+
+		.section-title {
+			font-size: 2rem;
+		}
+
+		.message-title {
+			font-size: 2rem;
+		}
+
+		.message-text {
+			font-size: 1rem;
+		}
+
+		.gallery-section,
+		.message-section {
+			padding: 80px 0;
+		}
+	}
+</style>

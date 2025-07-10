@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 128 128">
+    <!-- Fondo circular suave -->
+    <circle cx="64" cy="64" r="60" fill="url(#gradient)" />
+    
+    <!-- Definir gradiente romántico -->
+    <defs>
+        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ff9a9e;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#fecfef;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#ff6b9d;stop-opacity:1" />
+        </linearGradient>
+        
+        <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#ffebee;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    
+    <!-- Corazón principal -->
+    <g transform="translate(64, 64)">
+        <!-- Corazón grande central -->
+        <path d="M0,5 C0,-10 -20,-10 -20,5 C-20,20 0,35 0,35 C0,35 20,20 20,5 C20,-10 0,-10 0,5 Z" 
+              fill="url(#heartGradient)" 
+              stroke="#ff6b9d" 
+              stroke-width="2"
+              transform="scale(0.8)" />
+        
+        <!-- Corazón pequeño superior izquierdo -->
+        <path d="M0,2 C0,-3 -6,-3 -6,2 C-6,7 0,12 0,12 C0,12 6,7 6,2 C6,-3 0,-3 0,2 Z" 
+              fill="#ffffff" 
+              opacity="0.9"
+              transform="translate(-15, -15) scale(0.4)" />
+        
+        <!-- Corazón pequeño inferior derecho -->
+        <path d="M0,2 C0,-3 -6,-3 -6,2 C-6,7 0,12 0,12 C0,12 6,7 6,2 C6,-3 0,-3 0,2 Z" 
+              fill="#ffffff" 
+              opacity="0.7"
+              transform="translate(18, 18) scale(0.3)" />
+              
+        <!-- Estrellitas decorativas -->
+        <circle cx="-25" cy="0" r="2" fill="#ffffff" opacity="0.8" />
+        <circle cx="25" cy="-8" r="1.5" fill="#ffffff" opacity="0.6" />
+        <circle cx="12" cy="-25" r="1" fill="#ffffff" opacity="0.7" />
+        <circle cx="-18" cy="22" r="1.2" fill="#ffffff" opacity="0.5" />
+    </g>
+    
+    <style>
+        /* Animación sutil del corazón principal */
+        path:first-of-type {
+            animation: heartbeat 2s ease-in-out infinite;
+            transform-origin: center;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(0.8); }
+            50% { transform: scale(0.85); }
+        }
+        
+        /* Adaptación para modo oscuro */
+        @media (prefers-color-scheme: dark) {
+            circle:first-child { 
+                fill: url(#gradient);
+                filter: brightness(0.9);
+            }
+        }
+    </style>
+</svg>

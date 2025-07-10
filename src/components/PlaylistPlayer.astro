@@ -1,0 +1,1028 @@
+---
+interface Song {
+  src: string;
+  title: string;
+  artist: string;
+}
+
+interface Props {
+  songs: Song[];
+}
+
+const { songs } = Astro.props;
+---
+
+<div class="music-player" id="musicPlayer" data-songs={JSON.stringify(songs)}>
+  <div class="playlist-header">
+    <h3 class="playlist-title">Sa nostra playlist ❤️</h3>
+    <div class="header-controls">
+      <div class="song-counter">
+        <span id="currentSongIndex">1</span> / <span id="totalSongs"
+          >{songs.length}</span
+        >
+      </div>
+      <div class="window-controls">
+        <button
+          class="minimize-btn"
+          id="minimizeBtn"
+          title="Minimitzar reproductor"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M18 15L12 9L6 15"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <button class="close-btn" id="closeBtn" title="Tancar reproductor">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M18 6L6 18M6 6L18 18"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="player-content" id="playerContent">
+    <div class="current-song">
+      <div class="song-details">
+        <h4 class="song-title" id="currentTitle">
+          {songs[0]?.title || "Sense títol"}
+        </h4>
+        <p class="song-artist" id="currentArtist">
+          {songs[0]?.artist || "Artista desconegut"}
+        </p>
+      </div>
+
+      <div class="music-controls">
+        <button
+          class="control-btn prev-btn"
+          id="prevBtn"
+          title="Cançó anterior"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M19 20L9 12L19 4V20Z" fill="currentColor"></path>
+            <path d="M5 19V5H7V19H5Z" fill="currentColor"></path>
+          </svg>
+        </button>
+
+        <button
+          class="play-pause-btn"
+          id="playPauseBtn"
+          title="Reproduir/Pausar"
+        >
+          <svg
+            class="play-icon"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M8 5V19L19 12L8 5Z" fill="currentColor"></path>
+          </svg>
+          <svg
+            class="pause-icon hidden"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M6 4H10V20H6V4Z" fill="currentColor"></path>
+            <path d="M14 4H18V20H14V4Z" fill="currentColor"></path>
+          </svg>
+        </button>
+
+        <button class="control-btn next-btn" id="nextBtn" title="Cançó següent">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M5 4L15 12L5 20V4Z" fill="currentColor"></path>
+            <path d="M19 5V19H17V5H19Z" fill="currentColor"></path>
+          </svg>
+        </button>
+
+        <button
+          class="control-btn shuffle-btn"
+          id="shuffleBtn"
+          title="Mode aleatori"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16 3H21V8"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <path
+              d="M4 20L21 3"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <path
+              d="M21 16V21H16"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <path
+              d="M15 15L21 21"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <path
+              d="M4 4L9 9"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar">
+        <div class="progress" id="progress"></div>
+      </div>
+      <div class="time-display">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+    </div>
+
+    <div class="volume-container">
+      <button class="volume-btn" id="volumeBtn" title="Silenciar/Activar so">
+        <svg
+          class="volume-on"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11 5L6 9H2V15H6L11 19V5Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+          <path
+            d="M19.07 4.93A10 10 0 0 1 19.07 19.07M15.54 8.46A5 5 0 0 1 15.54 15.54"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+        <svg
+          class="volume-off hidden"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11 5L6 9H2V15H6L11 19V5Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+          <path
+            d="M23 9L17 15M17 9L23 15"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
+      <input
+        type="range"
+        class="volume-slider"
+        id="volumeSlider"
+        min="0"
+        max="100"
+        value="70"
+        title="Control de volum"
+      />
+    </div>
+
+    <!-- Toggle para mostrar/ocultar playlist -->
+    <button
+      class="playlist-toggle"
+      id="playlistToggle"
+      title="Mostrar/Ocultar playlist"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8 6H21M8 12H21M8 18H21M3 6H3.01M3 12H3.01M3 18H3.01"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+      Playlist
+    </button>
+
+    <!-- Lista de canciones -->
+    <div class="playlist-container hidden" id="playlistContainer">
+      <div class="playlist-header-mini">
+        <h4>Totes les cançons</h4>
+      </div>
+      <div class="playlist">
+        {
+          songs.map((song, index) => (
+            <div
+              class={`playlist-item ${index === 0 ? "active" : ""}`}
+              data-index={index}
+            >
+              <div class="song-info">
+                <div class="song-name">{song.title}</div>
+                <div class="artist-name">{song.artist}</div>
+              </div>
+              <div class="song-status">
+                <svg
+                  class="playing-icon hidden"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M6 4H10V20H6V4Z" fill="currentColor" />
+                  <path d="M14 4H18V20H14V4Z" fill="currentColor" />
+                </svg>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <audio id="audioPlayer" preload="metadata">
+      {songs.map((song) => <source src={song.src} type="audio/mpeg" />)}
+      El teu navegador no suporta la reproducció d'àudio.
+    </audio>
+
+    <!-- Botón para reabrir el reproductor cuando está cerrado -->
+    <div class="player-reopener hidden" id="playerReopener">
+      <button
+        class="reopen-btn"
+        id="reopenBtn"
+        title="Obrir reproductor de música"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="12" cy="12" r="2" fill="currentColor"></circle>
+          <path
+            d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"></path>
+        </svg>
+        <span class="reopen-text">♪ Música</span>
+      </button>
+    </div>
+  </div>
+
+  <style>
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      min-width: 320px;
+      max-width: 400px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .music-player:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .playlist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 6px;
+    }
+
+    .minimize-btn,
+    .close-btn {
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #718096;
+      transition: all 0.2s ease;
+    }
+
+    .minimize-btn:hover {
+      background: rgba(255, 193, 7, 0.2);
+      color: #ffc107;
+    }
+
+    .close-btn:hover {
+      background: rgba(220, 53, 69, 0.2);
+      color: #dc3545;
+    }
+
+    .player-content {
+      transition: all 0.3s ease;
+    }
+
+    .music-player.minimized .player-content {
+      height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin: 0;
+    }
+
+    .music-player.minimized {
+      padding: 8px 12px;
+    }
+
+    .music-player.minimized .minimize-btn svg {
+      transform: rotate(180deg);
+    }
+
+    .music-player.hidden {
+      display: none;
+    }
+
+    /* Botón para reabrir el reproductor */
+    .player-reopener {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+    }
+
+    .reopen-btn {
+      background: rgba(255, 107, 157, 0.9);
+      border: none;
+      border-radius: 50px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 4px 20px rgba(255, 107, 157, 0.4);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .reopen-btn:hover {
+      background: rgba(255, 107, 157, 1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 107, 157, 0.5);
+    }
+
+    .reopen-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Utility classes */
+    .hidden {
+      display: none !important;
+    }
+
+    .playlist-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin: 0;
+      font-family: "Playfair Display", serif;
+    }
+
+    .song-counter {
+      font-size: 0.8rem;
+      color: #718096;
+      background: rgba(255, 107, 157, 0.1);
+      padding: 4px 8px;
+      border-radius: 10px;
+    }
+
+    .current-song {
+      margin-bottom: 15px;
+    }
+
+    .song-details {
+      margin-bottom: 15px;
+    }
+
+    .song-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin: 0 0 4px 0;
+      font-family: "Playfair Display", serif;
+      line-height: 1.2;
+    }
+
+    .song-artist {
+      font-size: 0.9rem;
+      color: #718096;
+      margin: 0;
+      font-style: italic;
+    }
+
+    .music-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .control-btn {
+      background: rgba(255, 107, 157, 0.1);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #ff6b9d;
+      transition: all 0.3s ease;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 107, 157, 0.2);
+      transform: scale(1.1);
+    }
+
+    .control-btn.active {
+      background: #ff6b9d;
+      color: white;
+    }
+
+    .play-pause-btn {
+      background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    }
+
+    .play-pause-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .progress-container {
+      margin-bottom: 15px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background: linear-gradient(90deg, #ff6b9d, #ff8fb3);
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #718096;
+    }
+
+    .volume-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      padding: 10px 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .volume-btn {
+      background: none;
+      border: none;
+      color: #718096;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .volume-btn:hover {
+      color: #ff6b9d;
+      background: rgba(255, 107, 157, 0.1);
+    }
+
+    .volume-slider {
+      flex: 1;
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 2px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #ff6b9d;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .playlist-toggle {
+      width: 100%;
+      background: rgba(255, 107, 157, 0.1);
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      color: #ff6b9d;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .playlist-toggle:hover {
+      background: rgba(255, 107, 157, 0.2);
+    }
+
+    .playlist-container {
+      max-height: 200px;
+      overflow-y: auto;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .playlist-header-mini {
+      padding: 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .playlist-header-mini h4 {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #718096;
+    }
+
+    .playlist-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .playlist-item:hover {
+      background: rgba(255, 107, 157, 0.1);
+    }
+
+    .playlist-item.active {
+      background: rgba(255, 107, 157, 0.15);
+      border-left: 3px solid #ff6b9d;
+    }
+
+    .song-info .song-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #2d3748;
+      margin-bottom: 2px;
+    }
+
+    .song-info .artist-name {
+      font-size: 0.8rem;
+      color: #718096;
+    }
+
+    .playing-icon {
+      color: #ff6b9d;
+    }
+
+    .music-player.playing .song-title::after {
+      content: " 🎵";
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-2px);
+      }
+    }
+
+    /* Scrollbar personalizada */
+    .playlist-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .playlist-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+
+    .playlist-container::-webkit-scrollbar-thumb {
+      background: #ff6b9d;
+      border-radius: 3px;
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+      .music-player {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        max-width: none;
+      }
+
+      .playlist-header {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+
+      .music-controls {
+        gap: 8px;
+      }
+
+      .control-btn {
+        width: 35px;
+        height: 35px;
+      }
+
+      .play-pause-btn {
+        width: 45px;
+        height: 45px;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Obtener las canciones desde el atributo data
+      const playerElement = document.getElementById(
+        "musicPlayer",
+      ) as HTMLElement;
+      const songsData = playerElement?.getAttribute("data-songs");
+      const songs = songsData ? JSON.parse(songsData) : [];
+
+      const audio = document.getElementById("audioPlayer") as HTMLAudioElement;
+      const playPauseBtn = document.getElementById("playPauseBtn");
+      const playIcon = document.querySelector(".play-icon") as HTMLElement;
+      const pauseIcon = document.querySelector(".pause-icon") as HTMLElement;
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const shuffleBtn = document.getElementById("shuffleBtn");
+      const progressBar = document.getElementById("progressBar") as HTMLElement;
+      const progress = document.getElementById("progress") as HTMLElement;
+      const currentTimeEl = document.getElementById(
+        "currentTime",
+      ) as HTMLElement;
+      const durationEl = document.getElementById("duration") as HTMLElement;
+      const volumeSlider = document.getElementById(
+        "volumeSlider",
+      ) as HTMLInputElement;
+      const volumeBtn = document.getElementById("volumeBtn");
+      const volumeOnIcon = document.querySelector(".volume-on") as HTMLElement;
+      const volumeOffIcon = document.querySelector(
+        ".volume-off",
+      ) as HTMLElement;
+      const musicPlayer = document.getElementById("musicPlayer") as HTMLElement;
+      const currentTitleEl = document.getElementById(
+        "currentTitle",
+      ) as HTMLElement;
+      const currentArtistEl = document.getElementById(
+        "currentArtist",
+      ) as HTMLElement;
+      const currentSongIndexEl = document.getElementById(
+        "currentSongIndex",
+      ) as HTMLElement;
+      const playlistToggle = document.getElementById("playlistToggle");
+      const playlistContainer = document.getElementById(
+        "playlistContainer",
+      ) as HTMLElement;
+      const playlistItems = document.querySelectorAll(".playlist-item");
+
+      if (!audio || !songs.length) return;
+
+      let currentSongIndex = 0;
+      let isPlaying = false;
+      let isShuffled = false;
+
+      // Función para formatear tiempo
+      function formatTime(seconds: number): string {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, "0")}`;
+      }
+
+      // Función para cargar canción
+      function loadSong(index: number) {
+        const song = songs[index];
+        if (!song) return;
+
+        audio.src = song.src;
+        currentTitleEl.textContent = song.title;
+        currentArtistEl.textContent = song.artist;
+        currentSongIndexEl.textContent = (index + 1).toString();
+
+        // Actualizar estado visual de la playlist
+        playlistItems.forEach((item, i) => {
+          item.classList.toggle("active", i === index);
+          const playingIcon = item.querySelector(
+            ".playing-icon",
+          ) as HTMLElement;
+          if (playingIcon) {
+            playingIcon.classList.toggle("hidden", i !== index || !isPlaying);
+          }
+        });
+      }
+
+      // Play/Pause
+      playPauseBtn?.addEventListener("click", () => {
+        if (isPlaying) {
+          audio.pause();
+        } else {
+          audio.play().catch((e) => {
+            console.log("Error reproduciendo audio:", e);
+          });
+        }
+      });
+
+      // Eventos del audio
+      audio.addEventListener("play", () => {
+        isPlaying = true;
+        playIcon.classList.add("hidden");
+        pauseIcon.classList.remove("hidden");
+        musicPlayer.classList.add("playing");
+
+        // Actualizar icono de reproducción en playlist
+        const activeItem = document.querySelector(
+          ".playlist-item.active .playing-icon",
+        ) as HTMLElement;
+        if (activeItem) activeItem.classList.remove("hidden");
+      });
+
+      audio.addEventListener("pause", () => {
+        isPlaying = false;
+        playIcon.classList.remove("hidden");
+        pauseIcon.classList.add("hidden");
+        musicPlayer.classList.remove("playing");
+
+        // Ocultar icono de reproducción en playlist
+        const playingIcons = document.querySelectorAll(".playing-icon");
+        playingIcons.forEach((icon) =>
+          (icon as HTMLElement).classList.add("hidden"),
+        );
+      });
+
+      // Canción anterior
+      prevBtn?.addEventListener("click", () => {
+        currentSongIndex =
+          currentSongIndex === 0 ? songs.length - 1 : currentSongIndex - 1;
+        loadSong(currentSongIndex);
+        if (isPlaying) {
+          audio.play().catch((e) => console.log("Error:", e));
+        }
+      });
+
+      // Canción siguiente
+      nextBtn?.addEventListener("click", () => {
+        if (isShuffled) {
+          currentSongIndex = Math.floor(Math.random() * songs.length);
+        } else {
+          currentSongIndex = (currentSongIndex + 1) % songs.length;
+        }
+        loadSong(currentSongIndex);
+        if (isPlaying) {
+          audio.play().catch((e) => console.log("Error:", e));
+        }
+      });
+
+      // Toggle shuffle
+      shuffleBtn?.addEventListener("click", () => {
+        isShuffled = !isShuffled;
+        shuffleBtn.classList.toggle("active", isShuffled);
+      });
+
+      // Al finalizar canción
+      audio.addEventListener("ended", () => {
+        nextBtn?.click();
+      });
+
+      // Actualizar progreso
+      audio.addEventListener("timeupdate", () => {
+        if (audio.duration) {
+          const progressPercent = (audio.currentTime / audio.duration) * 100;
+          progress.style.width = `${progressPercent}%`;
+          // currentTimeEl.textContent = formatTime(audio.currentTime);
+        }
+      });
+
+      // Mostrar duración
+      audio.addEventListener("loadedmetadata", () => {
+        durationEl.textContent = formatTime(audio.duration);
+      });
+
+      // Click en barra de progreso
+      progressBar.addEventListener("click", (e) => {
+        const rect = progressBar.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const width = rect.width;
+        const clickPercent = clickX / width;
+
+        if (audio.duration) {
+          audio.currentTime = clickPercent * audio.duration;
+        }
+      });
+
+      // Control de volumen
+      volumeSlider.addEventListener("input", () => {
+        audio.volume = parseInt(volumeSlider.value) / 100;
+        updateVolumeIcon();
+      });
+
+      function updateVolumeIcon() {
+        const isMuted = audio.volume === 0;
+        volumeOnIcon.classList.toggle("hidden", isMuted);
+        volumeOffIcon.classList.toggle("hidden", !isMuted);
+      }
+
+      // Botón de silenciar
+      let lastVolume = 0.7;
+      volumeBtn?.addEventListener("click", () => {
+        if (audio.volume > 0) {
+          lastVolume = audio.volume;
+          audio.volume = 0;
+          volumeSlider.value = "0";
+        } else {
+          audio.volume = lastVolume;
+          volumeSlider.value = (lastVolume * 100).toString();
+        }
+        updateVolumeIcon();
+      });
+
+      // Toggle playlist
+      playlistToggle?.addEventListener("click", () => {
+        playlistContainer.classList.toggle("hidden");
+      });
+
+      // Click en elementos de playlist
+      playlistItems.forEach((item, index) => {
+        item.addEventListener("click", () => {
+          currentSongIndex = index;
+          loadSong(currentSongIndex);
+          if (isPlaying) {
+            audio.play().catch((e) => console.log("Error:", e));
+          }
+        });
+      });
+
+      // Controles de ventana (minimizar y cerrar)
+      const minimizeBtn = document.getElementById("minimizeBtn");
+      const closeBtn = document.getElementById("closeBtn");
+      const playerContent = document.getElementById("playerContent");
+      const playerReopener = document.getElementById("playerReopener");
+      const reopenBtn = document.getElementById("reopenBtn");
+
+      // Minimizar/Expandir reproductor
+      minimizeBtn?.addEventListener("click", () => {
+        musicPlayer.classList.toggle("minimized");
+      });
+
+      // Cerrar reproductor
+      closeBtn?.addEventListener("click", () => {
+        musicPlayer.classList.add("hidden");
+        playerReopener?.classList.remove("hidden");
+
+        // Pausar la música al cerrar
+        if (isPlaying) {
+          audio.pause();
+        }
+      });
+
+      // Reabrir reproductor
+      reopenBtn?.addEventListener("click", () => {
+        musicPlayer.classList.remove("hidden");
+        musicPlayer.classList.remove("minimized");
+        playerReopener?.classList.add("hidden");
+      });
+
+      // Inicializar
+      audio.volume = 0.7;
+      loadSong(0);
+      updateVolumeIcon();
+    });
+  </script>
+</div>

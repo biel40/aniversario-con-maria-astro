@@ -1,0 +1,223 @@
+---
+interface Props {
+  images: string[];
+}
+
+const { images } = Astro.props;
+---
+
+<div class="carousel-container">
+  <div class="carousel">
+    <div class="carousel-track" id="carousel-track">
+      {
+        images.map((image, index) => (
+          <div class="carousel-slide">
+            <img src={image} alt={`Record ${index + 1}`} loading="lazy" />
+          </div>
+        ))
+      }
+    </div>
+
+    <button class="carousel-btn carousel-btn-prev" id="prevBtn">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M15 18L9 12L15 6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+    </button>
+
+    <button class="carousel-btn carousel-btn-next" id="nextBtn">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9 18L15 12L9 6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="carousel-dots" id="carousel-dots">
+    {
+      images.map((_, index) => (
+        <button
+          class={`dot ${index === 0 ? "active" : ""}`}
+          data-slide={index}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .carousel-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    background: white;
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .carousel-slide {
+    min-width: 100%;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    transition: all 0.3s ease;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+  }
+
+  .carousel-btn:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .carousel-btn-prev {
+    left: 20px;
+  }
+
+  .carousel-btn-next {
+    right: 20px;
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dot.active {
+    background: #ff6b9d;
+    transform: scale(1.2);
+  }
+
+  .dot:hover {
+    background: #ff8fb3;
+  }
+
+  @media (max-width: 768px) {
+    .carousel-slide {
+      height: 300px;
+    }
+
+    .carousel-btn {
+      width: 40px;
+      height: 40px;
+    }
+
+    .carousel-btn-prev {
+      left: 10px;
+    }
+
+    .carousel-btn-next {
+      right: 10px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const track = document.getElementById("carousel-track") as HTMLElement;
+    const slides = track?.children;
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const dots = document.querySelectorAll(".dot");
+
+    if (!track || !slides || !nextBtn || !prevBtn) return;
+
+    let currentSlide = 0;
+    const slideCount = slides.length;
+
+    function updateCarousel() {
+      const translateX = -currentSlide * 100;
+      track.style.transform = `translateX(${translateX}%)`;
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentSlide);
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slideCount;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      currentSlide = currentSlide === 0 ? slideCount - 1 : currentSlide - 1;
+      updateCarousel();
+    }
+
+    nextBtn.addEventListener("click", nextSlide);
+    prevBtn.addEventListener("click", prevSlide);
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => {
+        currentSlide = index;
+        updateCarousel();
+      });
+    });
+  });
+</script>
