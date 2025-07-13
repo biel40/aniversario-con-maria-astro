@@ -926,7 +926,7 @@ const { songs } = Astro.props;
         if (audio.duration) {
           const progressPercent = (audio.currentTime / audio.duration) * 100;
           progress.style.width = `${progressPercent}%`;
-          // currentTimeEl.textContent = formatTime(audio.currentTime);
+          currentTimeEl.textContent = formatTime(audio.currentTime);
         }
       });
 
