@@ -5,7 +5,7 @@ import PlaylistPlayer from "../components/PlaylistPlayer.astro";
 
 const videoSrc = "https://www.youtube.com/embed/hop0nM1V_DE?si=kbs1awPhaXsQygX7";
 
-// Playlist de canciones
+// Playlist
 const playlist = [
 	{
 		src: "/music/song1.mp3",
@@ -68,15 +68,17 @@ const playlist = [
 		<div class="container">
 			<div class="message-content">
 				<h2 class="message-title">
-					Per al meu primer i únic amor que he tengut.
+					Per al meu primer (i únic) amor vertader que he tengut
 				</h2>
 				<div class="message-text">
 					<p>
 						Cada dia al teu costat és una nova aventura, cada moment
 						compartit amb tu és un regal de la vida. Gràcies,
 						gràcies per ser la meva companya de aventures, la meva
-						millor amiga, la meva confident i s'amor de sa meva
-						vida. Feim un equip increïble, i no puc imaginar la meva
+						millor amiga, la meva confident i, sobretot, s'amor de sa meva
+						vida. 
+						
+						Feim un equip increïble, i no puc imaginar la meva
 						vida sense tu.
 					</p>
 					<p>
@@ -90,6 +92,18 @@ const playlist = [
 	</section>
 
 	<PlaylistPlayer songs={playlist} />
+	
+	<!-- Corazones flotantes -->
+	<div class="floating-hearts">
+		<div class="floating-heart heart-1">💕</div>
+		<div class="floating-heart heart-2">💖</div>
+		<div class="floating-heart heart-3">💝</div>
+		<div class="floating-heart heart-4">💗</div>
+		<div class="floating-heart heart-5">💓</div>
+		<div class="floating-heart heart-6">💕</div>
+		<div class="floating-heart heart-7">💖</div>
+		<div class="floating-heart heart-8">💝</div>
+	</div>
 </Layout>
 
 <style>
@@ -287,6 +301,114 @@ const playlist = [
 		.gallery-section,
 		.message-section {
 			padding: 80px 0;
+		}
+	}
+
+	/* Corazones flotantes */
+	.floating-hearts {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
+		overflow: hidden;
+	}
+
+	.floating-heart {
+		position: absolute;
+		font-size: 1.5rem;
+		animation: floatUp linear infinite;
+		opacity: 0;
+	}
+
+	/* Posiciones y delays únicos para cada corazón */
+	.heart-1 {
+		left: 10%;
+		animation-duration: 15s;
+		animation-delay: 0s;
+	}
+
+	.heart-2 {
+		left: 20%;
+		animation-duration: 18s;
+		animation-delay: 2s;
+	}
+
+	.heart-3 {
+		left: 30%;
+		animation-duration: 12s;
+		animation-delay: 4s;
+	}
+
+	.heart-4 {
+		left: 45%;
+		animation-duration: 16s;
+		animation-delay: 1s;
+	}
+
+	.heart-5 {
+		left: 60%;
+		animation-duration: 14s;
+		animation-delay: 3s;
+	}
+
+	.heart-6 {
+		left: 75%;
+		animation-duration: 17s;
+		animation-delay: 5s;
+	}
+
+	.heart-7 {
+		left: 85%;
+		animation-duration: 13s;
+		animation-delay: 6s;
+	}
+
+	.heart-8 {
+		left: 95%;
+		animation-duration: 19s;
+		animation-delay: 7s;
+	}
+
+	/* Animación de flotación */
+	@keyframes floatUp {
+		0% {
+			bottom: -100px;
+			opacity: 0;
+			transform: translateX(0) rotate(0deg) scale(0.5);
+		}
+		10% {
+			opacity: 1;
+		}
+		20% {
+			transform: translateX(10px) rotate(5deg) scale(0.8);
+		}
+		40% {
+			transform: translateX(-10px) rotate(-5deg) scale(1);
+		}
+		60% {
+			transform: translateX(15px) rotate(10deg) scale(0.9);
+		}
+		80% {
+			transform: translateX(-5px) rotate(-3deg) scale(1.1);
+			opacity: 1;
+		}
+		90% {
+			opacity: 0.5;
+		}
+		100% {
+			bottom: 110vh;
+			opacity: 0;
+			transform: translateX(0) rotate(0deg) scale(0.3);
+		}
+	}
+
+	/* Responsivo para móviles */
+	@media (max-width: 768px) {
+		.floating-heart {
+			font-size: 1.2rem;
 		}
 	}
 </style>
